@@ -16,6 +16,7 @@ demo scripts. A future phase may add an interactive Streamlit application.
 - Build daily or game-day cumulative rankings with DuckDB.
 - Generate animated bar-chart races for player, goalie, and team statistics.
 - Save animations as GIF or MP4 files.
+- Display primary races in a Streamlit dashboard.
 - Persist analytical datasets as Parquet files.
 - Run automated tests with `pytest`.
 
@@ -23,6 +24,7 @@ demo scripts. A future phase may add an interactive Streamlit application.
 
 - Python 3.13 or newer
 - [`uv`](https://docs.astral.sh/uv/)
+- Streamlit, installed by `uv sync --dev`
 - FFmpeg on `PATH` when creating MP4 files
 - Network access for NHL API extraction and the live API tests
 
@@ -45,6 +47,18 @@ To verify the installation:
 ```bash
 uv run pytest -q
 ```
+
+## Dashboard
+
+After generating the race files, launch the basic four-panel dashboard with:
+
+```bash
+uv run streamlit run app.py
+```
+
+The dashboard displays top goals, top points, team points, and team goal
+differential races in a responsive 4x4 grid. The animation files remain
+generated outputs and are not committed to Git.
 
 ## Typical Workflow
 
@@ -138,6 +152,7 @@ responses are available.
 .
 ├── pyproject.toml                 # Project metadata and dependencies
 ├── uv.lock                        # Locked dependency versions
+├── app.py                          # Streamlit dashboard entry point
 ├── data/
 │   ├── processed/                 # Generated Parquet datasets
 │   └── outputs/                   # Generated GIF and MP4 animations
