@@ -33,7 +33,6 @@ RACE_PAGES = (
     (
         "Goalie Races",
         (
-            ("Top Scorers Race", "top_scorers_race.gif"),
             ("Goalies by Goals Against", "top_goalie_goals_against.gif"),
             ("Goalies by Save Percentage", "top_goalie_save_percentage.gif"),
             ("Goalies by Shots Faced", "top_goalie_shots_faced.gif"),
