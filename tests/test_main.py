@@ -16,6 +16,7 @@ from nhl_pipeline.main import (
     fetch_player_game_log,
     fetch_player_profile,
     fetch_roster_by_team,
+    format_bar_label,
     get_goalie_stats_schema_sql,
     get_player_stats_schema_sql,
     get_standings_schema_sql,
@@ -33,6 +34,12 @@ def test_team_colors_are_stable_and_case_insensitive():
 
     colored = add_team_colors(pd.DataFrame({"team_abbrev": ["COL", "DAL"]}))
     assert colored["team_color"].tolist() == [TEAM_COLORS["COL"], TEAM_COLORS["DAL"]]
+
+
+def test_format_bar_label_includes_team_for_skaters_and_goalies():
+    assert format_bar_label("Connor McDavid", "EDM") == "Connor McDavid (EDM)"
+    assert format_bar_label("Juuse Saros", "NSH") == "Juuse Saros (NSH)"
+    assert format_bar_label("Unknown Player", None) == "Unknown Player"
 
 
 def test_fetch_current_standings_returns_rows():

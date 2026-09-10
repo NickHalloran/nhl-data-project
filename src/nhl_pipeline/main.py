@@ -706,6 +706,13 @@ def animation_output_path(output_path: Path | str, output_format: str) -> Path:
     return Path(output_path).with_suffix(f".{output_format}")
 
 
+def format_bar_label(player_name: object, team_abbrev: object) -> str:
+    """Format a race label as ``Player Name (TEAM)``."""
+    name = str(player_name)
+    team = str(team_abbrev) if pd.notna(team_abbrev) else ""
+    return f"{name} ({team})" if team else name
+
+
 def create_bar_chart_race(
     daily_points: pd.DataFrame,
     output_path: Path | str | None = None,
@@ -775,10 +782,14 @@ def create_bar_chart_race(
         # Sort and get the requested number of leaders.
         latest = latest.nlargest(top_n, "cumulative_points")
         latest = latest.sort_values("cumulative_points")
+        latest["display_name"] = latest.apply(
+            lambda row: format_bar_label(row["player_name"], row["team_abbrev"]),
+            axis=1,
+        )
 
         # Create horizontal bar chart
         colors = latest["team_abbrev"].map(get_team_color).tolist()
-        bars = ax.barh(latest["player_name"], latest["cumulative_points"], color=colors)
+        bars = ax.barh(latest["display_name"], latest["cumulative_points"], color=colors)
 
         # Add value labels on bars.
         for i, (name, points) in enumerate(zip(latest["player_name"], latest["cumulative_points"])):
