@@ -62,7 +62,7 @@ page navigation to view:
 - Primary Races: top goals, top points, team points, and team goal differential
 - Skater Races: assists, hits, penalty minutes, and plus/minus
 - Goalie Races: top scorers, goals against, save percentage, and shots faced
-- Query Races: daily player, team, conference, and team-scorer queries
+- Query Races: team and conference query races
 
 The animation files remain generated outputs and are not committed to Git.
 

@@ -723,6 +723,7 @@ def create_bar_chart_race(
     xlim: tuple[float, float] | None = None,
     frame_duration_ms: int | None = None,
     target_duration_seconds: float | None = None,
+    show_team_labels: bool = True,
 ) -> None:
     """Create a bar chart race animation showing top point leaders throughout the season.
 
@@ -782,10 +783,12 @@ def create_bar_chart_race(
         # Sort and get the requested number of leaders.
         latest = latest.nlargest(top_n, "cumulative_points")
         latest = latest.sort_values("cumulative_points")
-        latest["display_name"] = latest.apply(
-            lambda row: format_bar_label(row["player_name"], row["team_abbrev"]),
-            axis=1,
-        )
+        latest["display_name"] = latest["player_name"]
+        if show_team_labels:
+            latest["display_name"] = latest.apply(
+                lambda row: format_bar_label(row["player_name"], row["team_abbrev"]),
+                axis=1,
+            )
 
         # Create horizontal bar chart
         colors = latest["team_abbrev"].map(get_team_color).tolist()

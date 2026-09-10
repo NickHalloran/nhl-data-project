@@ -42,19 +42,23 @@ RACE_PAGES = (
     (
         "Query Races",
         (
-            ("Daily Point Leaders", "query_daily_point_race.gif"),
-            ("Daily Team Point Leaders", "query_top_teams_race.gif"),
             ("Conference Team Leaders", "query_conference_leaders_race.gif"),
-            ("Team Top Scorers", "query_team_top_scorers_race.gif"),
+            ("Daily Team Point Leaders", "query_top_teams_race.gif"),
         ),
     ),
 )
 
 
+@st.cache_data(show_spinner=False)
+def _encoded_media(path_string: str, modified_ns: int) -> str:
+    """Return cached base64 media, invalidated when the file is regenerated."""
+    return base64.b64encode(Path(path_string).read_bytes()).decode("ascii")
+
+
 def _media_markup(path: Path, title: str) -> str:
     """Return browser markup for an animation file."""
     media_type = "video/mp4" if path.suffix.lower() == ".mp4" else "image/gif"
-    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+    encoded = _encoded_media(str(path), path.stat().st_mtime_ns)
     if media_type == "video/mp4":
         return (
             f'<video autoplay loop muted controls aria-label="{title}" '
@@ -68,9 +72,16 @@ def _media_markup(path: Path, title: str) -> str:
     )
 
 
+def _resolve_media_path(filename: str) -> Path:
+    """Prefer an MP4 sibling when it exists, otherwise use the requested file."""
+    requested_path = OUTPUT_DIR / filename
+    mp4_path = requested_path.with_suffix(".mp4")
+    return mp4_path if mp4_path.exists() else requested_path
+
+
 def _race_card(title: str, filename: str) -> str:
     """Build one dashboard card, including a missing-file state."""
-    path = OUTPUT_DIR / filename
+    path = _resolve_media_path(filename)
     if not path.exists():
         return (
             '<section class="race-card missing">'

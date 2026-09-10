@@ -30,6 +30,22 @@
 			"isBackground": true,
 			"problemMatcher": [],
 			"group": "build"
+		},
+		{
+			"label": "Run NHL Dashboard V2 Labels Task",
+			"type": "shell",
+			"command": "uv",
+			"args": [
+				"run",
+				"streamlit",
+				"run",
+				"app.py",
+				"--server.port",
+				"8508"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
 		}
 	]
 }

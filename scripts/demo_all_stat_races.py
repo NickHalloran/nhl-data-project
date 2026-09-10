@@ -86,6 +86,7 @@ def additive_race(
     title: str,
     top_n: int = 20,
     output_format: str | None = None,
+    show_team_labels: bool = True,
 ) -> None:
     """Build and save a calendar-day cumulative race for an additive stat."""
     input_frame = frame[["date", "player_name", "team_abbrev", value_column]].rename(
@@ -101,7 +102,14 @@ def additive_race(
     race = race.rename(columns={"date": "game_date", "points": "cumulative_points"})
     selected_format = output_format or choose_animation_format()
     output_path = animation_output_path(OUTPUT_DIR / output_name, selected_format)
-    create_bar_chart_race(race, output_path, fps=5, top_n=top_n, title=title)
+    create_bar_chart_race(
+        race,
+        output_path,
+        fps=5,
+        top_n=top_n,
+        title=title,
+        show_team_labels=show_team_labels,
+    )
     print(f"Saved {output_path} ({race['game_date'].nunique()} calendar-day frames)")
 
 
@@ -170,8 +178,24 @@ def main() -> None:
     for column, filename, title in goalie_values:
         additive_race(goalies, column, filename, title, output_format=output_format)
 
-    additive_race(teams, "points", "top_team_points.gif", "NHL Teams by Points", top_n=32, output_format=output_format)
-    additive_race(teams, "goal_differential", "top_team_goal_differential.gif", "NHL Teams by Goal Differential", top_n=32, output_format=output_format)
+    additive_race(
+        teams,
+        "points",
+        "top_team_points.gif",
+        "NHL Teams by Points",
+        top_n=32,
+        output_format=output_format,
+        show_team_labels=False,
+    )
+    additive_race(
+        teams,
+        "goal_differential",
+        "top_team_goal_differential.gif",
+        "NHL Teams by Goal Differential",
+        top_n=32,
+        output_format=output_format,
+        show_team_labels=False,
+    )
 
 
 if __name__ == "__main__":

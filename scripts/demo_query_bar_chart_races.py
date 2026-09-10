@@ -71,6 +71,7 @@ def create_query_races(
         fps=5,
         top_n=32,
         title="Daily Team Point Leaders",
+        show_team_labels=False,
     )
     create_bar_chart_race(
         team_race,
@@ -78,6 +79,7 @@ def create_query_races(
         fps=5,
         top_n=32,
         title="Daily Conference Team Leaders",
+        show_team_labels=False,
     )
 
     team_daily_input = daily_input[daily_input["team_abbrev"].str.upper() == team_abbrev.upper()]
@@ -88,6 +90,7 @@ def create_query_races(
         fps=5,
         top_n=20,
         title=f"Daily {team_abbrev.upper()} Scorers",
+        show_team_labels=True,
     )
     daily_race.to_parquet(PROCESSED_DIR / "daily_point_race.parquet", index=False)
     LOGGER.info("Saved query animations to %s", OUTPUT_DIR)

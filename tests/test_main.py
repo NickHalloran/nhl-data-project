@@ -42,6 +42,10 @@ def test_format_bar_label_includes_team_for_skaters_and_goalies():
     assert format_bar_label("Unknown Player", None) == "Unknown Player"
 
 
+def test_bar_chart_race_team_labels_can_be_disabled():
+    assert format_bar_label("COL", "COL") == "COL (COL)"
+
+
 def test_fetch_current_standings_returns_rows():
     standings = fetch_current_standings()
     assert not standings.empty
