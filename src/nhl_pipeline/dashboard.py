@@ -76,6 +76,7 @@ def _resolve_media_path(filename: str) -> Path:
     """Prefer an MP4 sibling when it exists, otherwise use the requested file."""
     requested_path = OUTPUT_DIR / filename
     mp4_path = requested_path.with_suffix(".mp4")
+    # Visualizations use GIF or MP4 based on filesize for a small bump in load times.
     return mp4_path if mp4_path.exists() else requested_path
 
 
