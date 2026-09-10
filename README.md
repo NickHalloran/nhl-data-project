@@ -50,15 +50,21 @@ uv run pytest -q
 
 ## Dashboard
 
-After generating the race files, launch the basic four-panel dashboard with:
+After generating the race files, launch the multi-page dashboard with:
 
 ```bash
 uv run streamlit run app.py
 ```
 
-The dashboard displays top goals, top points, team points, and team goal
-differential races in a responsive 4x4 grid. The animation files remain
-generated outputs and are not committed to Git.
+The dashboard keeps a responsive 4x4 grid on every page. Use the Streamlit
+page navigation to view:
+
+- Primary Races: top goals, top points, team points, and team goal differential
+- Skater Races: assists, hits, penalty minutes, and plus/minus
+- Goalie Races: top scorers, goals against, save percentage, and shots faced
+- Query Races: team and conference query races
+
+The animation files remain generated outputs and are not committed to Git.
 
 ## Typical Workflow
 
@@ -153,6 +159,7 @@ responses are available.
 ├── pyproject.toml                 # Project metadata and dependencies
 ├── uv.lock                        # Locked dependency versions
 ├── app.py                          # Streamlit dashboard entry point
+├── pages/                          # Additional Streamlit dashboard pages
 ├── data/
 │   ├── processed/                 # Generated Parquet datasets
 │   └── outputs/                   # Generated GIF and MP4 animations
